@@ -1,21 +1,16 @@
 package com.danielcoura.cursomc.domain;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import javax.persistence.ManyToOne;
 
 @Entity
-public class Produto implements Serializable{
+public class Cidade implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 
@@ -25,24 +20,23 @@ public class Produto implements Serializable{
 	
 	private String nome;
 	
-	private double preco;
+	@ManyToOne
+	@JoinColumn(name="estado_id")
+	private Estado estado;
 	
-	@JsonBackReference
-	@ManyToMany
-	@JoinTable(name = "PRODUTO_CATEGORIA",
-			joinColumns = @JoinColumn(name = "produto_id"),
-			inverseJoinColumns = @JoinColumn(name = "categoria_id")
-			)
-	private List<Categoria> categorias = new ArrayList<Categoria>();
-	
-	public Produto() {
+	public Cidade() {
 	}
 
-	public Produto(Integer id, String nome, double preco) {
+	public Cidade(Integer id, String nome) {
 		super();
 		this.id = id;
 		this.nome = nome;
-		this.preco = preco;
+	}
+
+	public Cidade(Integer id, String nome, Estado est1) {
+		this.id = id;
+		this.nome = nome;
+		this.estado = est1;
 	}
 
 	public Integer getId() {
@@ -61,22 +55,6 @@ public class Produto implements Serializable{
 		this.nome = nome;
 	}
 
-	public double getPreco() {
-		return preco;
-	}
-
-	public void setPreco(double preco) {
-		this.preco = preco;
-	}
-
-	public List<Categoria> getCategorias() {
-		return categorias;
-	}
-
-	public void setCategorias(List<Categoria> categorias) {
-		this.categorias = categorias;
-	}
-	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -93,13 +71,21 @@ public class Produto implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Produto other = (Produto) obj;
+		Cidade other = (Cidade) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+
+	public Estado getEstado() {
+		return estado;
+	}
+
+	public void setEstado(Estado estado) {
+		this.estado = estado;
 	}
 
 	
